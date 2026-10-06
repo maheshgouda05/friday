@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173d36">
+  <title>FRIDAY | Personal Companion</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/app/styles.css">
+  <script src="/app/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="/app/" aria-label="FRIDAY dashboard">
+        <span class="brand-mark">F</span>
+        <span>FRIDAY</span>
+      </a>
+
+      <p class="nav-heading">YOUR SPACE</p>
+      <nav class="primary-nav" aria-label="Main navigation">
+        <a class="nav-link is-active" href="#overview"><span class="nav-symbol">O</span>Overview</a>
+        <a class="nav-link" href="#tasks"><span class="nav-symbol">T</span>Tasks</a>
+        <a class="nav-link" href="#events"><span class="nav-symbol">E</span>Events</a>
+        <a class="nav-link" href="#profile"><span class="nav-symbol">P</span>Profile</a>
+        <a class="nav-link" href="#assistant"><span class="nav-symbol">A</span>Chat</a>
+      </nav>
+
+      <section class="conversation-history" aria-label="Conversation history">
+        <div class="conversation-history-heading">
+          <span>RECENT CHATS</span>
+          <button id="new-chat" class="new-chat-button" type="button">+ New Chat</button>
+        </div>
+        <div id="conversation-list" class="conversation-list" aria-live="polite">
+          <p class="conversation-empty">Your saved chats will appear here.</p>
+        </div>
+      </section>
+
+      <div class="sidebar-bottom">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>Local workspace</span>
+      </div>
+    </aside>
+
+    <main class="main-content" id="overview">
+      <header class="topbar">
+        <p id="current-date" class="date-label">YOUR DAY</p>
+        <a class="docs-link" href="/docs" target="_blank" rel="noreferrer">API docs <span aria-hidden="true">↗</span></a>
+      </header>
+
+      <section class="welcome-row" aria-labelledby="welcome-title">
+        <div>
+          <p class="eyebrow">YOUR PERSONAL COMPANION</p>
+          <h1 id="welcome-title">A little more in sync.</h1>
+          <p class="welcome-copy">A clear view of what matters today, and what is coming next.</p>
+        </div>
+        <div class="welcome-note">
+          <span class="note-mark" aria-hidden="true">F</span>
+          <p><strong id="welcome-name">Welcome back.</strong><br><span id="welcome-detail">Your day, at a glance.</span></p>
+        </div>
+      </section>
+
+      <section class="summary-grid" aria-label="Today's summary">
+        <article class="summary-card summary-primary">
+          <span class="summary-label">TASKS COMPLETE</span>
+          <div class="summary-value-row"><strong id="tasks-complete">0</strong><span id="tasks-total">of 0</span></div>
+          <div class="progress-track" aria-label="Task completion"><span id="task-progress"></span></div>
+        </article>
+        <article class="summary-card">
+          <span class="summary-label">UP NEXT</span>
+          <strong class="summary-value" id="next-event">Nothing scheduled</strong>
+          <span class="summary-detail" id="next-event-time">Add an event to see it here</span>
+        </article>
+        <article class="summary-card summary-accent">
+          <span class="summary-label">OPEN TASKS</span>
+          <strong class="summary-value" id="open-task-count">0</strong>
+          <span class="summary-detail">Ready when you are</span>
+        </article>
+      </section>
+
+      <div class="content-grid">
+        <section class="panel task-panel" id="tasks" aria-labelledby="tasks-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">MAKE A LITTLE PROGRESS</p>
+              <h2 id="tasks-title">Your tasks</h2>
+            </div>
+            <div class="filter-group" role="group" aria-label="Filter tasks">
+              <button type="button" class="filter-button is-selected" data-task-filter="all">All</button>
+              <button type="button" class="filter-button" data-task-filter="open">Open</button>
+              <button type="button" class="filter-button" data-task-filter="done">Done</button>
+            </div>
+          </div>
+
+          <form id="task-form" class="quick-form">
+            <label class="visually-hidden" for="task-title">Task title</label>
+            <input id="task-title" name="title" maxlength="200" placeholder="What would you like to get done?" required>
+            <label class="visually-hidden" for="task-description">Task notes</label>
+            <input id="task-description" name="description" maxlength="1000" placeholder="Add a note (optional)">
+            <button class="button button-dark" type="submit"><span aria-hidden="true">+</span> Add task</button>
+          </form>
+
+          <ul class="task-list" id="task-list" aria-live="polite">
+            <li class="empty-state">Loading tasks…</li>
+          </ul>
+        </section>
+
+        <div class="side-column">
+          <section class="panel events-panel" id="events" aria-labelledby="events-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">KEEP WHAT'S COMING IN VIEW</p>
+                <h2 id="events-title">Upcoming</h2>
+              </div>
+              <span class="count-badge" id="event-count">0</span>
+            </div>
+
+            <ul class="event-list" id="event-list" aria-live="polite">
+              <li class="empty-state">Loading events…</li>
+            </ul>
+
+            <details class="add-event-details">
+              <summary><span aria-hidden="true">+</span> Add an event</summary>
+              <form id="event-form" class="stacked-form">
+                <label>Title<input name="title" maxlength="200" required></label>
+                <div class="form-row">
+                  <label>Date<input name="date" type="date" required></label>
+                  <label>Time<input name="time" type="time"></label>
+                </div>
+                <label>Type
+                  <select name="event_type">
+                    <option value="other">Other</option>
+                    <option value="exam">Exam</option>
+                    <option value="meeting">Meeting</option>
+                    <option value="birthday">Birthday</option>
+                    <option value="appointment">Appointment</option>
+                    <option value="deadline">Deadline</option>
+                    <option value="college">College</option>
+                    <option value="project_review">Project review</option>
+                    <option value="personal">Personal</option>
+                  </select>
+                </label>
+                <label>Location <span class="optional-label">OPTIONAL</span><input name="location" maxlength="200"></label>
+                <button class="button button-dark" type="submit">Save event</button>
+              </form>
+            </details>
+          </section>
+
+          <section class="panel profile-panel" id="profile" aria-labelledby="profile-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">MAKE FRIDAY FEEL LIKE YOURS</p>
+                <h2 id="profile-title">Your profile</h2>
+              </div>
+            </div>
+            <p class="profile-intro" id="profile-intro">Set a few details so FRIDAY can keep your preferences together.</p>
+
+            <form id="profile-form" class="stacked-form profile-form">
+              <div class="form-row">
+                <label>Name<input name="name" maxlength="100" required></label>
+                <label>Preferred name<input name="preferred_name" maxlength="100"></label>
+              </div>
+              <div class="form-row">
+                <label>Timezone<input name="timezone" maxlength="100" required></label>
+                <label>Wake time<input name="daily_wake_time" type="time"></label>
+              </div>
+              <div class="form-row">
+                <label>Usual sleep time<input name="usual_sleep_time" type="time"></label>
+                <label>Communication style<input name="communication_style" maxlength="500" placeholder="e.g. concise and practical"></label>
+              </div>
+              <label>Interests <span class="optional-label">COMMA SEPARATED</span><input name="interests" placeholder="Python, music, hiking"></label>
+              <label>Learning goals <span class="optional-label">COMMA SEPARATED</span><input name="learning_goals" placeholder="FastAPI, better writing"></label>
+              <label>Personal goals <span class="optional-label">COMMA SEPARATED</span><input name="personal_goals" placeholder="Exercise regularly"></label>
+              <div class="profile-footer">
+                <span id="profile-save-status" class="form-hint" aria-live="polite"></span>
+                <button class="button button-outline" id="profile-submit" type="submit">Create profile</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      </div>
+
+      <section class="panel chat-panel" id="assistant" aria-labelledby="chat-title">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">FRIDAY</p>
+            <h2 id="chat-title">FRIDAY</h2>
+            <p id="conversation-title" class="current-chat-title">New Chat</p>
+          </div>
+          <span id="chat-status" class="chat-status">Ready</span>
+        </div>
+        <div id="chat-messages" class="chat-messages" role="log" aria-live="polite" aria-relevant="additions text">
+          <article class="chat-message assistant-message">
+            <span class="message-sender">FRIDAY</span>
+            <p class="message-content">Hi. What would you like to talk about?</p>
+          </article>
+        </div>
+        <p class="privacy-note">Configure AI_API_KEY and AI_MODEL in .env to chat. Messages go to your AI provider; FRIDAY does not save them. Browser speech recognition may process audio through its speech service.</p>
+        <form id="chat-form" class="chat-form">
+          <label class="visually-hidden" for="chat-input">Ask FRIDAY</label>
+          <textarea id="chat-input" name="message" rows="2" maxlength="4000" placeholder="Type a message or use your microphone…" required></textarea>
+          <div class="chat-actions">
+            <div class="chat-voice-actions">
+              <button id="voice-input" class="button button-outline" type="button" title="Speak a message to FRIDAY">Use microphone</button>
+              <label class="speech-toggle" for="speak-replies">
+                <input id="speak-replies" type="checkbox" checked>
+                <span>Speak replies</span>
+              </label>
+              <button id="stop-speaking" class="text-action" type="button" title="Stop spoken reply">Stop speech</button>
+            </div>
+            <button id="send-chat" class="button button-dark" type="submit">Send <span aria-hidden="true">↗</span></button>
+          </div>
+          <p id="chat-hint" class="chat-hint" aria-live="polite">Microphone use requires browser permission. Press Enter to send; Shift+Enter for a new line.</p>
+        </form>
+      </section>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </main>
+  </div>
+</body>
+</html>
