@@ -195,7 +195,7 @@
             <p class="message-content">Hi. What would you like to talk about?</p>
           </article>
         </div>
-        <p class="privacy-note">Configure AI_API_KEY and AI_MODEL in .env to chat. Messages go to your AI provider; FRIDAY does not save them. Browser speech recognition may process audio through its speech service.</p>
+        <p class="privacy-note">Configure AI_API_KEY and AI_MODEL in .env to chat. Messages are saved in FRIDAY's local database and sent to your configured AI provider. Browser speech recognition may process audio through its speech service.</p>
         <form id="chat-form" class="chat-form">
           <label class="visually-hidden" for="chat-input">Ask FRIDAY</label>
           <textarea id="chat-input" name="message" rows="2" maxlength="4000" placeholder="Type a message or use your microphone…" required></textarea>
